@@ -79,7 +79,4 @@ test:
 #     url: <%= ENV['DATABASE_URL'] %>
 #
 production:
-  <<: *default
-  database: heisenberg_production
-  username: heisenberg
-  password: <%= ENV['HEISENBERG_DATABASE_PASSWORD'] %>
+  url: <%= ENV['DATABASE_URL'] %>
