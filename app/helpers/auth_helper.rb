@@ -4,23 +4,36 @@ module AuthHelper
   class InvalidTokenError < StandardError;
   end
 
-  def self.encode(payload, exp=20.years.from_now)
+  def get_auth_token(user)
+    encode({user_id: user.id})
+  end
+
+  def encode(payload, exp=20.years.from_now)
     payload[:exp] = exp.to_i
     JWT.encode(payload, SECRET_KEY)
   end
 
-  def decoded_token
-    @decoded_token ||= JWT.decode(http_auth_header_token, SECRET_KEY)[0]
+  def decoded_payload
+    @decoded_payload ||= decode_token[0]
   end
 
-  def authenticate_current_user
-    if decoded_token
-      @current_user ||= User.find_by(id: decoded_token[:user_id])
+  def decode_token
+    @decoded_token ||= JWT.decode(http_auth_header_token, SECRET_KEY)
+  end
+
+  def current_user
+    if decoded_payload
+      @current_user ||= User.find_by(id: decoded_payload[:user_id])
     end
   end
 
-  # Alias method for better readability and use in controllers elsewhere
-  alias_method :current_user, :authenticate_current_user
+  def validate_token
+    begin
+      decode_token
+    rescue JWT::DecodeError, JWT::ExpiredSignature, InvalidTokenError
+      render json: {error: 'Unauthorized'}, status: :unauthorized
+    end
+  end
 
   def http_auth_header_token
     authorization = request.headers['Authorization']

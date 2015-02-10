@@ -1,11 +1,11 @@
 class UsersController < ApplicationController
-  skip_before_action :authenticate_request, only: [:create]
+  skip_before_action :validate_token, only: [:create]
 
   # POST /users
   def create
     @user = User.new(user_params)
     if @user.save
-      @token = @user.generate_auth_token
+      @token = get_auth_token(@user)
       render :create, status: :created
     else
       render json: {errors: @user.errors}, status: :unprocessable_entity

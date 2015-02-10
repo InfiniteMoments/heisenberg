@@ -13,10 +13,6 @@ class User < ActiveRecord::Base
   validates :password, length: {minimum: 6}
   has_secure_password
 
-  def generate_auth_token
-    AuthHelper.encode({user_id: self.id})
-  end
-
   private
 
   # Converts email to all lower-case.
