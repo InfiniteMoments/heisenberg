@@ -5,6 +5,9 @@ class ApplicationController < ActionController::API
   include ActionController::Helpers
   include AuthHelper
 
+  # Declare all helpers you need in views here
+  helper AuthHelper
+
   self.responder = ApplicationResponder
   respond_to :json
 

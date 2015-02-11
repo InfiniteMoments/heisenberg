@@ -1,1 +1,2 @@
-json.(@user, :id, :name, :username, :email)
+json.(@user, :id, :name, :username)
+json.email @user.email if current_user?(@user)
