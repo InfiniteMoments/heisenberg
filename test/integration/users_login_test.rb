@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class UserLoginTest < ActionDispatch::IntegrationTest
+class UsersLoginTest < ActionDispatch::IntegrationTest
   test "login with invalid information" do
     post login_path, {username: 'saiaspire', password: 'wrongpassword'}, {'Accept' => Mime::JSON}
     assert_response :unauthorized
