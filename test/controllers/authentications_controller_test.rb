@@ -1,7 +1,8 @@
 require 'test_helper'
 
 class AuthenticationsControllerTest < ActionController::TestCase
-  # test "the truth" do
-  #   assert true
-  # end
+  test "should return unauthorized for logout when not logged in" do
+    delete :destroy
+    assert_response :unauthorized
+  end
 end
