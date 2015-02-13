@@ -20,6 +20,9 @@ gem 'responders', '~> 2.0'
 
 gem 'jwt'
 
+# Timeout and log requests that run too long
+gem 'rack-timeout'
+
 # Use unicorn as the app server
 # gem 'unicorn'
 
@@ -41,5 +44,5 @@ end
 
 group :production do
   gem 'rails_12factor', '0.0.3'
-  gem 'unicorn', '4.8.3'
+  gem 'puma'
 end
