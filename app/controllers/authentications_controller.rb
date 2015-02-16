@@ -2,7 +2,7 @@ class AuthenticationsController < ApplicationController
   skip_before_action :validate_token, only: :create
 
   def create
-    @user = User.find_by(username: params[:username].downcase)
+    @user = User.find_by(username: params[:username].downcase) unless params[:username].nil?
     if @user && @user.authenticate(params[:password])
       @token = get_auth_token(@user)
       render :create, status: :created
