@@ -9,6 +9,8 @@ class ActiveSupport::TestCase
   fixtures :all
   include AuthHelper
 
+  MIME_JSON = 'application/json'
+
   # Add more helper methods to be used by all tests here...
   def json
     ActiveSupport::JSON.decode @response.body
@@ -19,8 +21,8 @@ class ActiveSupport::TestCase
   def log_in_as(user, options={})
     password = options[:password] || 'password'
     if integration_test?
-      post login_path, {username: user.username,
-                        password: password}, {'Accept' => Mime::JSON}
+      post login_path, ActiveSupport::JSON.encode({username: user.username,
+                                                   password: password}), {'Accept' => MIME_JSON, 'Content-Type' => MIME_JSON}
       @token = json['token']
     else
       token = get_auth_token(user)

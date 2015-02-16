@@ -4,7 +4,8 @@ class UsersControllerTest < ActionController::TestCase
   def setup
     @user = users(:sai)
     @other_user = users(:ara)
-    @request.headers['Accept'] = Mime::JSON
+    @request.headers['Accept'] = MIME_JSON
+    @request.headers['Content-Type'] = MIME_JSON
   end
 
   test "should return unauthorized for show when not logged in" do
@@ -33,5 +34,17 @@ class UsersControllerTest < ActionController::TestCase
     @request.headers['Accept'] = nil
     patch :update, {id: @user.id}
     assert_response :not_acceptable
+  end
+
+  test "should return unsupported media type for show if Content-Type header is not JSON" do
+    @request.headers['Content-Type'] = nil
+    get :show, {id: @user.id}
+    assert_response :unsupported_media_type
+  end
+
+  test "should return unsupported media type for update if Content-Type header is not JSON" do
+    @request.headers['Content-Type'] = nil
+    patch :update, {id: @user.id}
+    assert_response :unsupported_media_type
   end
 end

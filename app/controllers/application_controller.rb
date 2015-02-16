@@ -6,12 +6,17 @@ class ApplicationController < ActionController::API
   # Declare all helpers you need in views here
   helper AuthHelper
 
-  before_action :validate_request_format
+  before_action :validate_request_content_type
+  before_action :validate_request_accept
   before_action :validate_token
 
   private
 
-  def validate_request_format
-    render :nothing => true, :status => 406 unless params[:format] == 'json' || /json/ =~ request.headers['Accept']
+  def validate_request_accept
+    render :nothing => true, :status => 406 unless /json/ =~ request.headers['Accept']
+  end
+
+  def validate_request_content_type
+    render :nothing => true, :status => 415 unless /json/ =~ request.headers['Content-Type']
   end
 end

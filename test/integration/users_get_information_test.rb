@@ -8,7 +8,7 @@ class UsersGetInformationTest < ActionDispatch::IntegrationTest
   end
 
   test "get information of logged in user" do
-    get_with_token user_path(@user), {}, {'Accept' => Mime::JSON}
+    get_with_token user_path(@user), {}, {'Accept' => MIME_JSON, 'Content-Type' => MIME_JSON}
     assert_response :success
     assert_equal json['id'], @user.id
     assert_equal json['username'], @user.username
@@ -17,7 +17,7 @@ class UsersGetInformationTest < ActionDispatch::IntegrationTest
   end
 
   test "get information of other user" do
-    get_with_token user_path(@other_user), {}, {'Accept' => Mime::JSON}
+    get_with_token user_path(@other_user), {}, {'Accept' => MIME_JSON, 'Content-Type' => MIME_JSON}
     assert_response :success
     assert_equal json['id'], @other_user.id
     assert_equal json['username'], @other_user.username
