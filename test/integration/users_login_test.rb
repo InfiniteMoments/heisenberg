@@ -17,7 +17,7 @@ class UsersLoginTest < ActionDispatch::IntegrationTest
     assert_response :created
     assert_not_empty json['token']
     token = json['token']
-    delete logout_path, {}, {'Authorization' => "Bearer #{token}"}
+    delete logout_path, {}, {'Authorization' => "Bearer #{token}", 'Accept' => Mime::JSON}
     assert_response :success
   end
 end

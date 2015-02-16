@@ -4,6 +4,7 @@ class UsersControllerTest < ActionController::TestCase
   def setup
     @user = users(:sai)
     @other_user = users(:ara)
+    @request.headers['Accept'] = Mime::JSON
   end
 
   test "should return unauthorized for show when not logged in" do
@@ -20,5 +21,17 @@ class UsersControllerTest < ActionController::TestCase
     log_in_as(@other_user)
     patch :update, {id: @user.id}
     assert_response :forbidden
+  end
+
+  test "should return not acceptable for show if Accept header is not JSON" do
+    @request.headers['Accept'] = nil
+    get :show, {id: @user.id}
+    assert_response :not_acceptable
+  end
+
+  test "should return not acceptable for update if Accept header is not JSON" do
+    @request.headers['Accept'] = nil
+    patch :update, {id: @user.id}
+    assert_response :not_acceptable
   end
 end
