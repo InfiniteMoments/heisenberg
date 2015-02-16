@@ -2,7 +2,7 @@ require 'test_helper'
 
 class UsersSignupTest < ActionDispatch::IntegrationTest
   test "signup with invalid information" do
-    post users_path, ActiveSupport::JSON.encode({name: '', username: '&!(dd', email: '1908example.com', password: 'goo'}),
+    post users_path, json_encode({name: '', username: '&!(dd', email: '1908example.com', password: 'goo'}),
          {'Accept' => MIME_JSON, 'Content-Type' => MIME_JSON}
     assert_response :unprocessable_entity
   end
@@ -12,7 +12,7 @@ class UsersSignupTest < ActionDispatch::IntegrationTest
     email = 'test@example.com'
     username = 'testuser'
     assert_difference 'User.count', 1 do
-      post users_path, ActiveSupport::JSON.encode({name: name, username: username, email: email, password: 'foobar'}),
+      post users_path, json_encode({name: name, username: username, email: email, password: 'foobar'}),
            {'Accept' => MIME_JSON, 'Content-Type' => MIME_JSON}
     end
     assert_response :created

@@ -16,13 +16,17 @@ class ActiveSupport::TestCase
     ActiveSupport::JSON.decode @response.body
   end
 
+  def json_encode(value)
+    ActiveSupport::JSON.encode value
+  end
+
   # Logs in the given test user, sets up the header for functional tests
   # Sets up the token for use with helper methods below in integration tests
   def log_in_as(user, options={})
     password = options[:password] || 'password'
     if integration_test?
-      post login_path, ActiveSupport::JSON.encode({username: user.username,
-                                                   password: password}), {'Accept' => MIME_JSON, 'Content-Type' => MIME_JSON}
+      post login_path, json_encode({username: user.username,
+                                    password: password}), {'Accept' => MIME_JSON, 'Content-Type' => MIME_JSON}
       @token = json['token']
     else
       token = get_auth_token(user)
