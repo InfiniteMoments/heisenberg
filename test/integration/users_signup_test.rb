@@ -17,6 +17,7 @@ class UsersSignupTest < ActionDispatch::IntegrationTest
     end
     assert_response :created
     assert_not_empty json['token']
+    assert_not_nil json['id']
     assert_equal json['name'], name
     assert_equal json['email'], email
     assert_equal json['username'], username
